@@ -35,6 +35,8 @@ public class Main {
 
     long[] c = new long[11];
     c[1] = 1L;
+    System.out.println(
+        "The number of connected graphs with " + Integer.toString(1) + " vertices is " + Long.toString(c[1]));
 
     // Calculate c[n] using direct approach
 
