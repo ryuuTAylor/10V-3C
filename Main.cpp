@@ -23,11 +23,25 @@ int main()
 
   long c[11] = {0};
   c[1] = 1L;
-  for (int n = 2; n <= 10; ++n)
+
+  // Calculate c[n] using direct approach
+
+  // for (int n = 2; n <= 10; ++n)
+  // {
+  //   for (int i = 1; i <= n - 1; ++i)
+  //   {
+  //     c[n] += c[i] * c[n - i] * choose(n - 2, i - 1) * ((1 << i) - 1);
+  //   }
+  // }
+
+  // Calculate c[n] = g[n] - d[n] using the Subtraction Rule
+
+  for (int n = 2; n <= 10; n++)
   {
-    for (int i = 1; i <= n - 1; ++i)
+    c[n] = 1L << (choose(n, 2)); // all possible graphs
+    for (int i = 1; i <= n - 1; i++)
     {
-      c[n] += c[i] * c[n - i] * choose(n - 2, i - 1) * ((1 << i) - 1);
+      c[n] -= choose(n - 1, i - 1) * c[i] * (1L << choose((n - i), 2));
     }
   }
 

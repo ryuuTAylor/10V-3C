@@ -5,13 +5,17 @@ public class Main {
 
   // choose y from x, requires y <= x <= 10
   public static int choose(int x, int y) {
-    // if (y >= x || y == 0 || x == 0)
-    // return 1;
+    if (y > x)
+      return 0;
+    else if (y == x || y == 0)
+      return 1;
     assert x <= 10;
     int ans = fact[x] / (fact[y] * fact[x - y]);
+    // Debug Code for Examining choose y form x
+
     // System.out
-    // .println("Choosing " + Integer.toString(y) + " from " + Integer.toString(x) +
-    // " is " + Integer.toString(ans));
+    //     .println("Choosing " + Integer.toString(y) + " from " + Integer.toString(x) +
+    //         " is " + Integer.toString(ans));
     return ans;
   }
 
@@ -21,24 +25,36 @@ public class Main {
       fact[i] = fact[i - 1] * i;
     }
 
+    // Debug Code for Examining fact[n]
+
     // for (int i = 1; i <= 10; i++) {
-    // System.out.println(
-    // "The factorial of " + Integer.toString(i) + " is " +
-    // Integer.toString(fact[i]));
+    //   System.out.println(
+    //       "The factorial of " + Integer.toString(i) + " is " +
+    //           Integer.toString(fact[i]));
     // }
 
     long[] c = new long[11];
     c[1] = 1L;
-    for (int n = 2; n <= 10; n++) {
-      for (int i = 1; i <= n - 1; i++) {
-        c[n] += c[i] * c[n - i] * choose(n - 2, i - 1) * ((1 << i) - 1);
-      }
-    }
 
-    // Print out the number of connected graphs for n = 1 to 10
-    for (int i = 1; i <= 10; i++) {
+    // Calculate c[n] using direct approach
+
+    // for (int n = 2; n <= 10; n++) {
+    //   for (int i = 1; i <= n - 1; i++) {
+    //     c[n] += c[i] * c[n - i] * choose(n - 2, i - 1) * ((1 << i) - 1);
+    //   }
+    //   System.out.println(
+    //       "The number of connected graphs with " + Integer.toString(n) + " vertices is " + Long.toString(c[n]));
+    // }
+
+    // Calculate c[n] = g[n] - d[n] using the Subtraction Rule
+    
+    for (int n = 2; n <= 10; n++) {
+      c[n] = 1L << (choose(n, 2)); // all possible graphs
+      for (int i = 1; i <= n - 1; i++) {
+        c[n] -= choose(n - 1, i - 1) * c[i] * (1L << choose((n - i), 2));
+      }
       System.out.println(
-          "The number of connected graphs with " + Integer.toString(i) + " vertices is " + Long.toString(c[i]));
+          "The number of connected graphs with " + Integer.toString(n) + " vertices is " + Long.toString(c[n]));
     }
 
     // total graphs with 10 vertices
